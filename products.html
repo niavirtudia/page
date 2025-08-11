@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Grid Produk dengan Kotak Pencarian</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#search-box {
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background: white;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.product-item.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.product-item img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.product-item h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.product-item p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.link-grid {
+  display: grid;
+  gap: 5px;
+}
+
+.link-grid a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #007bff;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.link-grid a:hover {
+  background: #0056b3;
+}
+
+.link-grid svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.share-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.share-button:hover {
+  background: #218838;
+  transform: scale(1.1);
+}
+
+.share-button svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.share-options {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.share-options a {
+  display: block;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: #007bff;
+  font-size: 14px;
+}
+
+.share-options a:hover {
+  background: #f4f4f4;
+}
+
+@media (max-width: 600px) {
+  .share-button {
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+  }
+  .share-options {
+    bottom: 60px;
+    right: 10px;
+    max-width: 200px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Sprite untuk ikon -->
+<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="logo-shopee" viewBox="0 0 264 375">
+    <path d="m174.212 201.122c-1.496 12.868-9.297 23.287-21.379 28.438-6.77 2.854-15.811 4.418-23.063 3.953-11.157-.465-21.616-3.229-31.378-8.137-3.377-1.859-8.581-5.344-12.551-8.598-.979-.93-1.143-1.395-.433-2.357.312-.564 1.009-1.596 2.438-3.686 2.179-3.081 2.412-3.488 2.644-3.883.697-1 1.759-1.091 2.869-.301.152.155.152.155.236.23.148.162.148.162.546.465.411.315.709.465.782.643 10.461 8.189 22.638 12.838 34.931 13.303 17.063-.23 29.325-7.902 31.584-19.758 2.326-12.903-7.843-24.167-27.729-30.448-6.265-1.859-22.031-8.156-24.942-9.908-13.629-7.983-20.026-18.461-19.096-31.455 1.395-17.958 18.078-31.324 39.163-31.441 9.359 0 18.793 1.951 27.743 5.716 3.228 1.373 8.989 4.494 10.905 5.986 1.15.852 1.395 1.781.686 2.822-.236.635-.93 1.581-2.128 3.609v0c-1.747 2.664-1.812 2.775-2.129 3.361-.622.978-1.511 1.056-2.695.356-9.566-6.506-20.356-9.762-32.145-9.994-14.643.232-25.653 8.96-26.362 20.919-.146 10.743 7.877 18.569 25.252 24.462 35.339 11.385 48.819 24.686 46.251 45.703m-43.576-185.385c22.96 0 41.717 21.785 42.646 49.095h-85.237c.82-27.31 19.632-49.095 42.591-49.095m119.001 54.269c0-2.85-2.206-5.174-5.021-5.174h-.184-55.101c-1.394-36.032-27.168-64.832-58.695-64.832-31.546 0-57.253 28.8-58.628 64.832h-55.332c-2.775.063-4.977 2.336-4.977 5.174 0 .164 0 .236 0 .4h-.063l7.859 173.798c0 .47.092.944.092 1.509 0 .11.015.144.015.351v.266l.058.092c1.183 12.117 9.937 21.777 21.901 22.25v.092h175.509c.092 0 .146 0 .237 0 .136 0 .136 0 .236 0h .364v-.092c12.134-.295 22.069-10.133 23.016-22.383v0l .053-.225c0-.115 0-.236 0-.351 0-.564.092-1.039.092-1.509l7.859-173.798h-.063c0-.164 0-.236 0-.4z"/>
+  </symbol>
+  <symbol id="logo-tokopedia" viewBox="0 0 400 87">
+    <path d="m213.9 61c-4.347 4.417-9.548 6.637-15.57 6.637-4.874 0-9.016-0.9948-13.24-3.454v-10.13c3.401 2.309 7.673 4.508 11.89 4.508 8.792 0 14.02-6.058 14.02-14.64 0-8.592-5.412-14.83-14.21-14.83-3.928 0-7.112 1.414-9.599 4.248-2.666 3.07-4.044 7.458-4.044 13.26v39.98h-0.6624c-4.846 0-8.771-3.932-8.771-8.782v-32.7c0-13.88 8.472-25.08 23.03-25.08 7.19 0 13.03 2.462 17.46 7.407 4.163 4.621 6.226 10.48 6.226 17.52 0 6.27-2.177 11.63-6.527 16.05zm102.1-0.3387c-4.33 4.654-9.903 6.976-16.66 6.976-7.132 0-12.94-2.462-17.37-7.407-4.161-4.678-6.225-10.54-6.225-17.52 0-12.36 9.528-22.69 22.07-22.69 4.836 0 9.035 1.022 13.28 3.352v10.23c-3.401-2.309-7.672-4.508-11.89-4.508-8.792 0-14.03 6.057-14.03 14.65 0 8.471 5.539 14.83 14.21 14.83 3.925 0 7.157-1.473 9.742-4.439 2.569-2.948 3.904-7.279 3.904-13.1v-31.82c0-4.852 3.928-8.782 8.771-8.782h0.6624v42.1c0 7.414-2.143 13.48-6.468 18.14zm26.64-45.13c-0.99 1.11-2.409 1.621-4.141 1.621-3.238 0-5.556-2.391-5.556-5.609 0-3.293 2.274-5.516 5.556-5.516 3.158 0 5.556 2.344 5.556 5.516 0 1.569-0.4594 2.914-1.415 3.988zm47.93 25.5c0-3.724-1.407-6.671-4.233-8.905-2.546-2.01-5.726-3.032-9.596-3.032-8.539 0-14.02 6.683-14.02 14.92 0 7.931 5.811 14.55 13.93 14.55 5.648 0 8.668-3.303 11.89-7.418v11.86c-1.641 1.231-3.528 2.573-5.455 3.361-2.033 0.8498-4.461 1.263-7.265 1.263-13.58 0-22.53-11.26-22.53-24.27 0-13.01 8.953-24.27 22.53-24.27 3.501 0 5.728 0.7248 7.672 1.621 2.273 1.052 4.153 2.628 5.727 4.829 2.546 3.58 3.857 8.112 3.857 13.65z"/>
+  </symbol>
+  <symbol id="logo-lazada" viewBox="0 0 24 24">
+    <path fill="#5B8BEB" d="M12,18.4c-0.2,0-0.4-0.1-0.5-0.2c-1.4-0.8-11.6-7.2-12-7.4c-0.3-0.1-0.5-0.4-0.5-0.8V5.6c0-0.3,0.2-0.7,0.5-0.9l0.1-0.1c1-0.6,4.3-2.6,4.8-2.9c0.1-0.1,0.3-0.1,0.4-0.1c0.1,0,0.3,0.1,0.4,0.1c0,0,4.6,3,5.3,3.3c0.5,0.2,1,0.4,1.6,0.3c0.6,0,1.2-0.1,1.8-0.4c0.7-0.4,5.1-3.2,5.2-3.2c0.1-0.1,0.2-0.1,0.4-0.1s0.3,0.1,0.4,0.1c0.6,0.3,4.7,2.8,4.9,2.9c0.3,0.2,0.5,0.5,0.5,0.8v8.9c0,0.3-0.2,0.6-0.5,0.8c-0.4,0.2-10.6,6.6-12,7.4C12.4,18.3,12.2,18.4,12,18.4"/>
+    <path fill="#5B8BEB" d="M12,18.4h0.1c0.2,0,0.4-0.1,0.5-0.2c1.4-0.8,11.6-7.2,12-7.4c0.3-0.1,0.5-0.4,0.5-0.8V5.6c0-0.2,0-0.3-0.1-0.4l-13,7.1L12,18.4"/>
+    <path fill="#5B8BEB" d="M0,18.4h0.1c0.2,0,0.4-0.1,0.5-0.2c1.4-0.8,11.6-7.2,12-7.4c0.3-0.1,0.5-0.4,0.5-0.8V5.7c0-0.2,0-0.3-0.1-0.4L0,12.4V18.4"/>
+  </symbol>
+  <symbol id="logo-blibli" viewBox="0 0 48 48">
+    <g transform="translate(5.616615, 0.541872)">
+      <path d="M34.3305 43.817C31.4546 33.5402 31.4546 26.4784 33.4182 15.1278C33.5981 14.0192 32.7047 13.0718 31.5966 13.0718C31.543 13.0718 31.5082 13.0718 31.4546 13.0718C25.649 13.6434 21.9144 13.9466 18.1955 13.9466C14.4767 13.9466 10.7263 13.6592 4.93648 13.0718C4.88281 13.0718 4.84808 13.0718 4.79442 13.0718C3.70528 13.0718 2.81187 14.0192 2.97287 15.1278C4.93963 26.4784 4.93963 33.5402 2.07947 43.817C1.72274 44.9792 2.61614 46.0499 3.77789 46.0499H32.6353C33.7938 46.0499 34.6873 44.9761 34.3305 43.817ZM23.9853 19.8872C24.7524 19.8872 25.3617 20.4936 25.3617 21.2263C25.3617 21.9243 24.7556 22.5654 23.9853 22.5654C23.2182 22.5654 22.6815 21.94 22.6815 21.2263C22.6815 20.4936 23.2182 19.8872 23.9853 19.8872ZM12.2984 19.8872C13.0655 19.8872 13.6748 20.4936 13.6748 21.2263C13.6748 21.9243 13.0687 22.5654 12.2984 22.5654C11.5313 22.5654 10.9946 21.94 10.9946 21.2263C10.9946 20.4936 11.5313 19.8872 12.2984 19.8872ZM18.1766 33.0601C12.5478 33.0601 10.7263 28.1459 10.7263 25.7678C10.7263 25.2688 11.1209 24.874 11.6197 24.874C12.1185 24.874 12.5131 25.2688 12.5131 25.7678C12.5131 27.5553 13.8895 31.2726 18.1766 31.2726C22.4479 31.2726 23.8401 27.5711 23.8401 25.7678C23.8401 25.2688 24.2347 24.874 24.7335 24.874C25.2323 24.874 25.6269 25.2688 25.6269 25.7678C25.6301 28.1617 23.8054 33.0601 18.1766 33.0601Z" fill="#0072ff"/>
+      <path d="M21.9242 8.20607C23.9501 7.72749 25.2047 5.69646 24.7263 3.66966C24.2479 1.64286 22.2177 0.387771 20.1918 0.866356C18.1658 1.34494 16.9113 3.37597 17.3896 5.40277C17.868 7.42957 19.8982 8.68466 21.9242 8.20607Z" fill="#FFCD00"/>
+      <path d="M30.0278 11.9415L30.1636 8.18004C30.2078 6.92623 28.825 6.13669 27.7706 6.81886L20.7402 11.3635C20.2414 11.6856 19.9383 12.1562 19.8184 12.6616C22.6785 12.5952 25.7376 12.3552 30.0278 11.9415Z" fill="#00CDC7"/>
+      <path d="M6.58107 11.9664C11.1744 12.418 14.6596 12.6801 18.107 12.6833L16.4591 7.21959C16.1465 6.18053 15.0511 5.59309 14.0125 5.90575L7.40503 7.8986C6.3664 8.21126 5.77922 9.30716 6.09175 10.3462L6.58107 11.9664Z" fill="#FF4646"/>
+    </g>
+  </symbol>
+  <symbol id="logo-tiktok" viewBox="0 0 1024 1024">
+    <path d="M832 128H192c-35.328 0-64 28.672-64 64v640c0 35.328 28.672 64 64 64h640c35.328 0 64-28.672 64-64V192c0-35.328-28.672-64-64-64zM704 448v-96h-96v96h-96v96h96v96h96v-96h96v-96h-96z"/>
+  </symbol>
+  <symbol id="logo-zalora" viewBox="0 0 108 108">
+    <path d="M54 93.6c-25.3-6.8-43.2-29.5-43.2-55.1 0-30.9 25.9-56.7 56.7-56.7 30.9 0 56.7 25.9 56.7 56.7 0 31-26.2 56.9-57.3 56.6-4 0-9.9-0.7-13-1.5zm34.6-34.3c0-0.6-7.8-9.7-17.2-20.2l-17.3-19.1 17.3-0.3 17.2-0.2v-2.6-2.6h-22.1c-16.9 0-22.1 0.3-22.1 1.4 0 0.6 7.9 10 17.4 20.7l17.4 19.4-16.9 0.3c-16.1 0.2-16.9 0.4-16.9 2.3 0 2 0.8 2.1 21.5 2.1 14.7 0 21.5-0.3 21.5-1.2z"/>
+  </symbol>
+  <symbol id="icon-share" viewBox="0 0 24 24">
+    <path d="M18 16.1c-.8 0-1.4.3-2 .8l-7.1-4.2c.1-.3.1-.5.1-.8s0-.5-.1-.8L16 6.9c.6.5 1.2.8 2 .8 1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3c0 .3 0 .5.1.8L8 9.9c-.6-.5-1.2-.8-2-.8-1.7 0-3 1.3-3 3s1.3 3 3 3c.8 0 1.4-.3 2-.8l7.1 4.2c-.1.3-.1.5-.1.8 0 1.7 1.3 3 3 3s3-1.3 3-3-1.3-3-3-3z"/>
+  </symbol>
+</svg>
+
+<div class="search-container">
+  <input type="search" id="search-box" placeholder="Cari produk...">
+</div>
+
+<div class="product-grid" id="product-grid"></div>
+
+<button class="share-button" onclick="sharePage()" aria-label="Bagikan halaman ini">
+  <svg><use xlink:href="#icon-share"/></svg>
+</button>
+<div class="share-options" id="share-options" role="dialog" aria-labelledby="share-label">
+  <span id="share-label" style="display: none;">Share options</span>
+  <a href="#" onclick="shareViaWhatsApp();return false;">Share via WhatsApp</a>
+  <a href="#" onclick="shareViaX();return false;">Share via X</a>
+  <a href="#" onclick="shareViaFacebook();return false;">Share via Facebook</a>
+  <a href="#" onclick="shareViaMessenger();return false;">Share via Messenger</a>
+  <a href="#" onclick="shareViaTelegram();return false;">Share via Telegram</a>
+  <a href="#" onclick="shareViaLinkedIn();return false;">Share via LinkedIn</a>
+  <a href="#" onclick="shareViaSnapchat();return false;">Share via Snapchat</a>
+  <a href="#" onclick="shareViaPinterest();return false;">Share via Pinterest</a>
+  <a href="#" onclick="shareViaThreads();return false;">Share via Threads</a>
+</div>
+
+<script>
+let allProducts = [];
+const productGrid = document.getElementById('product-grid');
+const searchBox = document.getElementById('search-box');
+
+let itemsPerLoad = 20;
+let renderedCount = 0;
+let currentData = [];
+
+async function loadProducts() {
+  try {
+    const response = await fetch('https://data.modenyania.com/shop/products.json');
+    if (!response.ok) throw new Error('Gagal mengambil data produk');
+    allProducts = await response.json();
+    currentData = [...allProducts];
+    renderProducts();
+  } catch (error) {
+    console.error('Error:', error);
+    productGrid.innerHTML = '<p>Gagal memuat produk. Silakan coba lagi nanti.</p>';
+  }
+}
+
+function renderProducts(reset = false) {
+  if (reset) {
+    productGrid.innerHTML = '';
+    renderedCount = 0;
+  }
+  const slice = currentData.slice(renderedCount, renderedCount + itemsPerLoad);
+  slice.forEach((product, index) => {
+    const div = document.createElement('div');
+    div.className = 'product-item';
+    const colCount = product.links.length;
+    div.innerHTML = `
+      <img src="${product.image}" alt="${product.name}">
+      <p>${product.searched}</p>
+      <h3>${product.name}</h3>
+      <div class="link-grid" style="grid-template-columns: repeat(${colCount}, 1fr);">
+        ${product.links.map(l => `<a href="${l.url}" target="_blank" title="${l.title || ''}" aria-label="${l.title || l.logo}"><svg><use xlink:href="#${l.logo}"/></svg></a>`).join('')}
+      </div>
+    `;
+    productGrid.appendChild(div);
+    setTimeout(() => {
+      div.className = 'product-item show';
+      div.style.transitionDelay = (index * 0.07) + 's';
+    }, 10);
+  });
+  renderedCount += slice.length;
+}
+
+function sharePage() {
+  const shareData = {
+    title: document.title,
+    text: 'Check out this product catalog!',
+    url: window.location.href
+  };
+  const shareOptions = document.getElementById('share-options');
+  
+  if (navigator.share) {
+    navigator.share(shareData).catch(err => console.error('Share failed:', err));
+  } else {
+    shareOptions.style.display = shareOptions.style.display === 'block' ? 'none' : 'block';
+  }
+}
+
+function shareViaWhatsApp() {
+  const text = `Check out this product catalog! ${window.location.href}`;
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank');
+}
+
+function shareViaX() {
+  const text = 'Check out this product catalog!';
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://x.com/intent/post?text=${encodedText}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+}
+
+function shareViaFacebook() {
+  const text = 'Check out this product catalog!';
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodedText}`, '_blank');
+}
+
+function shareViaMessenger() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.facebook.com/dialog/send?app_id=123456789&link=${url}&redirect_uri=${encodeURIComponent(window.location.href)}`, '_blank');
+}
+
+function shareViaTelegram() {
+  const text = `Check out this product catalog! ${window.location.href}`;
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodedText}`, '_blank');
+}
+
+function shareViaLinkedIn() {
+  const text = 'Check out this product catalog!';
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(document.title)}&summary=${encodedText}`, '_blank');
+}
+
+function shareViaSnapchat() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.snapchat.com/add?share_id=${url}`, '_blank');
+}
+
+function shareViaPinterest() {
+  const text = 'Check out this product catalog!';
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&description=${encodedText}`, '_blank');
+}
+
+function shareViaThreads() {
+  const text = 'Check out this product catalog!';
+  const encodedText = encodeURIComponent(text);
+  window.open(`https://www.threads.net/share?text=${encodedText}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+}
+
+searchBox.addEventListener('input', function() {
+  const searchText = this.value.toLowerCase();
+  currentData = allProducts.filter(p =>
+    p.name.toLowerCase().includes(searchText) ||
+    p.searched.toLowerCase().includes(searchText)
+  );
+  renderProducts(true);
+});
+
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    renderProducts();
+  }
+});
+
+document.addEventListener('click', (e) => {
+  const shareOptions = document.getElementById('share-options');
+  if (!e.target.closest('.share-button') && !e.target.closest('.share-options')) {
+    shareOptions.style.display = 'none';
+  }
+});
+
+loadProducts();
+</script>
+
+</body>
+</html>
