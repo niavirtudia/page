@@ -1,2 +1,2 @@
-# shop
-Halaman belanja Modenyania
+# page
+Halaman spesifik Modenyania
