@@ -1,6 +1,15 @@
 <!doctype html>
 <html ⚡ lang="id">
 <head>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "9c199bcb-cf48-4621-a2b4-9db44e3a8c0d",
+    });
+  });
+  </script>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -64,6 +73,9 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MNJR3QW"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="hero-section">
+	<section class="headline">
+        <h1 class="product-name">Merche Tas Bahu Wanita Alice</h1>
+	</section>
 	<section class="hero-image">
 	<amp-carousel height="640" width="640" layout="responsive" type="slides" role="region" aria-label="Merche Tas Bahu Wanita Alice – Your Daily Slay Starter Pack!">
 		<amp-img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLk-GPNHZenVAGlQgyPQr3tT7yIYkT2xD5P4dY24jWPlJ-QPxMrRJciOZiRLNtN5pAoZo7IcqS1dYDA6nR9Cn-YDy5QbbSYOFz3qVFdW9IDKg2gKySr5dcZ94fRWYh7jQDJ2DtLdg-egKQY0PBmR1AkgLwU_qu3lR43R7AH-EsYM_QmnJI6wAmDj6Ulj7Q/s1600/MERCHE001_1.webp" width="640" height="640" alt="Merche Tas Bahu Wanita Alice – Your Daily Slay Starter Pack!"></amp-img>
@@ -74,11 +86,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<amp-img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiVUNxOmPQZcxOIa0LEcWpfCw56SFqEkEDeo0Nu8aJ0ifiTsqJmKKSuAgHMhva8_545jI8uvB05LmyyFKUFgOoLA6LmUGSOgOLoRO9GxoS9QjbbZs-ulbF9F2qNT0ufuCO3gRhd-CM1foPmkYtshogLL3Xjn25rZWQ_YoHWLsnQpcFP2mGunEU43xRpTe5B/s1600/MERCHE001_6.webp" width="640" height="640" alt="Merche Tas Bahu Wanita Alice – Your Daily Slay Starter Pack!"></amp-img>
 	</amp-carousel>
 	</section>
-	<section class="headline">
-        <h1 class="product-name">Merche Tas Bahu Wanita Alice</h1>
-		<h2 class="product-price">Rp259.000</h2>
-	</section>
 	<section class="article-section affiliate-link">
+		<h2 class="product-price">Rp259.000</h2>
 		<div class="shop-item flex a-flex">
 			<a href="https://vt.tokopedia.com/t/ZShsf7YdQ/" target="_blank" id="link-tiktok" class="slink tiktok-btn">TikTok Shop</a>
 			<a href="https://s.shopee.co.id/8zsoYcHESb" target="_blank" id="link-shopee" class="slink shopee-btn">Shopee</a>
@@ -158,7 +167,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</article>
 </main>
 <footer class="footer flex flex-column items-center"><nav class="footer-nav"><ul class="list-reset flex"><li class="lst"><a href="https://list.modenyania.com/tas-wanita/" title="Semua Produk">Semua Produk</a></li><li class="lst"><a href="https://list.modenyania.com/" title="Semua List">Semua List</a></li><li class="lst"><a href="https://www.modenyania.com/" title="Beranda">Beranda</a></li></ul></nav><small> © <amp-date-display datetime='now' height='18' layout='fixed' width='45'><template type='amp-mustache'><span>{{year}}</span></template></amp-date-display> Modenyania</small></footer>
-<amp-install-serviceworker src="/serviceworker.js" data-iframe-src="/offline/" layout="nodisplay"></amp-install-serviceworker>
+<amp-install-serviceworker src="/sw.js" data-iframe-src="/offline/" layout="nodisplay"></amp-install-serviceworker>
 </body>
 </html>
-
