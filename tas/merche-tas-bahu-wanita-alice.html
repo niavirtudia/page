@@ -1,15 +1,6 @@
 <!doctype html>
 <html ⚡ lang="id">
 <head>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "9c199bcb-cf48-4621-a2b4-9db44e3a8c0d",
-    });
-  });
-  </script>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -167,6 +158,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	</article>
 </main>
 <footer class="footer flex flex-column items-center"><nav class="footer-nav"><ul class="list-reset flex"><li class="lst"><a href="https://list.modenyania.com/tas-wanita/" title="Semua Produk">Semua Produk</a></li><li class="lst"><a href="https://list.modenyania.com/" title="Semua List">Semua List</a></li><li class="lst"><a href="https://www.modenyania.com/" title="Beranda">Beranda</a></li></ul></nav><small> © <amp-date-display datetime='now' height='18' layout='fixed' width='45'><template type='amp-mustache'><span>{{year}}</span></template></amp-date-display> Modenyania</small></footer>
-<amp-install-serviceworker src="/sw.js" data-iframe-src="/offline/" layout="nodisplay"></amp-install-serviceworker>
+<amp-install-serviceworker src="/serviceworker.js" data-iframe-src="/offline/" layout="nodisplay"></amp-install-serviceworker>
 </body>
 </html>
+
